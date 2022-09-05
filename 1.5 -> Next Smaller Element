@@ -1,0 +1,43 @@
+https://www.codingninjas.com/codestudio/problems/next-smaller-element_1112581
+
+Sample Input 1:
+--------------
+2
+4
+2 1 4 3
+3
+1 3 2
+
+Sample Output 1:
+---------------
+1 -1 3 -1
+-1 2 -1
+
+Approch:
+-------
+hum array ka last sa iterate karenga.
+pehla stack mai -1 push kr dia
+[2 1 4 3]
+curr -> 3 next smaller element cahiya stack mai check kar lo
+agr chota ans raha ans mai store kr lo and curr element ko push kr do.
+agr baradha raha tho chota dhundhka lana hoga
+
+
+code:
+-----
+vector<int> nextSmallerElement(vector<int> &arr, int n)
+{
+    stack <int> s;
+    vector<int> ans(n);
+    s.push(-1);
+    for(int i=n-1;i>=0;i--){
+        int curr=arr[i];
+        while(!s.empty() && s.top()>=curr){
+            s.pop();
+        }
+        ans[i]=s.top();
+        s.push(curr);
+    }
+    return ans;
+    
+}
