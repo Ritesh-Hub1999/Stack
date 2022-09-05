@@ -1,0 +1,58 @@
+https://leetcode.com/problems/valid-parentheses/
+
+Example 1:
+----------
+Input: s = "()"
+Output: true
+
+Example 2:
+----------
+Input: s = "()[]{}"
+Output: true
+
+Example 3:
+----------
+Input: s = "(]"
+Output: false
+
+Approch:
+----------
+step1 -> agr open bracket hai in teeno mai "( [ {" tho stack mai push kr denga.
+
+step2 -> agr closing bracket hai usma check karenga uska corresponding open bracket hai.
+
+step3-> agr stack empty hojai tho wo balanced hai 
+
+step 4-> agr empty nai hai tho return kr denga false
+
+code:
+----
+
+ bool isValid(string s) {
+        stack<char>stack;
+        
+        for(int i=0;i<s.length();i++){
+            char ch=s[i];
+            if(ch=='('|| ch=='['|| ch=='{'){
+                stack.push(ch);
+            }
+            //closing bracket hoga ch mai
+            else{
+                if(!stack.empty()){
+                    if(stack.top()=='(' && ch==')' || stack.top()=='{'
+                        && ch=='}'|| stack.top()=='[' && ch==']')
+                        stack.pop();
+                        
+                    else
+                        return false;
+                }
+                else
+                    return false;
+            }
+        }
+        if(stack.empty()){
+            return true;
+        }
+        else
+            return false;
+    }
