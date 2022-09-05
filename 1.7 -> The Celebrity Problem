@@ -1,0 +1,101 @@
+https://practice.geeksforgeeks.org/problems/the-celebrity-problem/1
+
+Example 1:
+----------
+Input:
+N = 3
+M[][] = {{0 1 0},
+         {0 0 0}, 
+         {0 1 0}}
+Output: 1
+Explanation: 0th and 2nd person both
+know 1. Therefore, 1 is the celebrity. 
+
+Example 2:
+----------
+Input:
+N = 2
+M[][] = {{0 1},
+         {1 0}}
+Output: -1
+Explanation: The two people at the party both
+know each other. None of them is a celebrity.
+
+//Every one knows celebrity but celebrity knows no one
+//ignore diagonal qki wo log khud ko janta hai
+
+Approch:
+------
+-> celebrity ki row mai all zero hoga
+-> celebrity ki col mai all one hoga
+   except diagonal
+   
+Approch 2:
+----------
+-> put all elements inside the stack
+-> jab tak stack ka size != 1
+    -> A-> s.top() 
+    -> B-> s.top()
+-> check karenga A knows B
+    if A janta hai B ko tho A celebrity nai hai
+
+-> check karenga B knows A
+    if B janta hai A ko so B celbrity nai hai so B.pop() and A ko puch kr do
+    
+-> jo single element hai wo ek potential celebrity ho sakta hai
+
+->verify potential celebrity
+   celebrity knows no one (row check should be 0)
+   everyone knows celebrity (col sara ka 1 hona cahiya siwai celebrity ka)
+
+code:
+----
+bool knows(int &first,int &second,vector<vector<int> >& M){
+        return M[first][second];
+    }
+    public:
+    //Function to find if there is a celebrity in the party or not.
+    int celebrity(vector<vector<int> >& M, int n) 
+    {
+        stack<int>s;
+        for(int i=0;i<n;i++){
+            s.push(i);
+        }
+        while(s.size()>1){
+            int first=s.top();
+            s.pop();
+            int second=s.top();
+            s.pop();
+            if(knows(first,second,M)){
+                s.push(second);
+            }
+            else{
+                s.push(first);
+            }
+        }
+        int candidate=s.top();
+        
+        bool rowCheck=true;
+        for(int i=0;i<n;i++){
+            //row pura zero hona cahiya
+            if(M[candidate][i]!=0){
+                rowCheck=false;
+            }
+        }
+        
+        bool colCheck=true;
+        for(int i=0;i<n;i++){
+            //col pura check krna h 1 hona cahiya
+            
+            if(i!=candidate && M[i][candidate]!=1){
+                colCheck=false;
+            }
+        }
+        if(rowCheck && colCheck){
+            return candidate;
+        }
+        else{
+            return -1;
+        }
+        
+    }
