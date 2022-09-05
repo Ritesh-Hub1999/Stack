@@ -1,0 +1,61 @@
+https://www.codingninjas.com/codestudio/problems/redundant-brackets_975473
+
+Sample Input 1 :
+---------------
+2
+(a+b)
+(a+c*b)+(c))
+
+Sample Output 1 :
+------------------
+No
+Yes
+
+//We call them redundant bracket jab sab expression ka bina hi baat ka useless bracket laga ho.
+
+Approch:
+--------
+step 1-> stack mai hum open bracket and koi bhi arethmetic operator
+         aiga usko store karenga.
+         
+step 2-> check closing bracket milta hai and un dono ka bich ek operator
+         hona cahiya. ex: ( + )
+         
+step 3-> so operator check krna ka lia top element nikalo.
+          jab tak stack empty nai hota ya stack ka top '('
+          nai hota check the operators and pop krta raho.
+          
+step 4-> jaisa open bracket mila loop sa bahar aya phr pop kr dia open bracket ko
+
+code:
+------
+bool findRedundantBrackets(string &s)
+{
+    stack<char>stack;
+    
+    for(int i=0;i<s.length();i++){
+        char ch=s[i];
+        if(ch=='('||ch=='+'||ch=='-'||ch=='*'||ch=='/'){
+            stack.push(ch);
+        }
+        else{
+            //clsing bracket 
+            if(ch==')'){
+                bool isRedundant=true;
+                char top=stack.top();
+                while(!stack.empty() && stack.top()!='('){
+                    if(top=='+'||top=='-'||top=='*'||top=='/'){
+                        isRedundant=false;
+                        stack.pop();
+                    }
+                }
+                //jaisa open bracket mila loop sa bahar aya phr pop kr dia open bracket ko
+                
+                stack.pop();
+                if(isRedundant==true)
+                    return true;
+            }
+        }
+    }
+    return false;
+}
