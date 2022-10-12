@@ -1,0 +1,92 @@
+https://leetcode.com/problems/decode-string/description/
+
+This question can be solve with the help of valid parenthisis question
+
+Example 1:
+-----------
+Input: s = "3[a]2[bc]"
+Output: "aaabcbc"
+
+explanation: 3[a] = aaa
+             2[bc] = bcbc
+o/p: aaabcbc
+
+Example 2:
+-----------
+Input: s = "3[a2[c]]"
+Output: "accaccacc"
+
+Example 3:
+---------
+Input: s = "2[abc]3[cd]ef"
+Output: "abcabccdcdcdef"
+
+Approch:
+--------
+So here we can use the approch of valid parenthisis.
+
+//step 1: jab tak closing bracket nai milta hai tab tak stack mai push krta raho
+
+//step 2: jab tak stack mai opening bracket nai milta tab tak temp variable mai store krta jao
+
+//step 3: if condition sa bahar tab ainga jb open bracket '[' mila hoga usa bhi pop krna hoga
+
+//step 4: ab stack mai digit bacha hoga usa convert karna hai integer mai
+
+//step 5: 2[ab] is convert karna hai abab mai
+
+//step 6: dubara sa stack mai push kr do repeat variable mai jo store hai qki usa ans mai bhi store krna hai
+
+Code:
+-----
+string decodeString(string s) {
+       string ans;
+       stack<char> st;
+       for(int i=0;i<s.length();i++){
+        
+        //step 1: jab tak closing bracket nai milta hai tab tak stack mai push krta raho
+            if(s[i] == ']'){
+                string temp;
+        //step 2: jab tak stack mai opening bracket nai milta tab tak temp mai store krta jao
+                while(!st.empty() && st.top() != '['){
+                    char ch = st.top();
+                    st.pop();
+                    temp = ch + temp;
+                }
+        //step 3: if condition sa bahar tab ainga jb open bracket mila hoga usa bhi pop krna hoga
+                st.pop();
+        
+        //step 4: ab stack mai digit bacha hoga usa convert karna hai integer mai
+                string num;
+                while(!st.empty() && st.top() >= 48 && st.top() <= 57){
+                    char ch = st.top();
+                    st.pop();
+                    num = ch + num;
+                }
+                int number = stoi(num);
+
+        //step 5: 2[ab] is convert karna hai abab mai
+
+                string repeat;
+                for(int j=0;j < number;j++){
+                    repeat += temp;
+                }
+
+        //step 6: dubara sa stack mai push kr do repeat mai jo store hai qki usa ans mai bhi store krna hai
+                for(int k=0;k<repeat.length();k++){
+                    st.push(repeat[k]);
+                }
+           }
+            else{
+                st.push(s[i]);
+            }
+       }
+
+       while(!st.empty()){
+           char ch = st.top();
+           st.pop();
+           ans.push_back(ch);
+       }
+        reverse(ans.begin(),ans.end());
+       return ans;
+    }
