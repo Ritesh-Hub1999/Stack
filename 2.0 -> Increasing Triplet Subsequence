@@ -1,0 +1,64 @@
+https://leetcode.com/problems/longest-valid-parentheses/description/
+Example 1:
+---------
+Input: s = "(()"
+Output: 2
+Explanation: The longest valid parentheses substring is "()".
+
+Example 2:
+----------
+Input: s = ")()())"
+Output: 4
+Explanation: The longest valid parentheses substring is "()()".
+
+Example 3:
+----------
+Input: s = ""
+Output: 0
+
+Approch:
+-------
+-> open bracket mila us index ko push kr do stack mai.
+-> jaisa closing bracket mila usa pop kro and length
+   find kro.
+-> agr closing bracket aai starting mai usa push kr do 
+    stack mai
+    
+//step 1: stack mai push kr do starting mai -1
+
+//STEP 2: jaisa hii open bracket aai uska index push kr do stack mai
+
+//step 3: jaisa hi closing bracket mila index ko pop kr do
+          ya length nikalo and max find kro
+
+// step4: Agr stack empty hua tho starting ki index push kr do
+
+Code:
+-----
+int longestValidParentheses(string s) {
+        stack<int> st;
+        int ans = 0;
+        //step 1: stack mai push kr do starting mai -1
+        st.push(-1);
+        for(int i=0;i<s.length();i++){
+        
+        //STEP 2: jaisa hii open bracket aai uska index push kr do stack mai
+            if(s[i] == '('){
+                st.push(i);
+            }
+        //step 3: jaisa hi closing bracket mila index ko pop kr do
+        //ya length nikalo and max find kro
+            else{
+                st.pop();
+                // step4: Agr stack empty hua tho starting ki index push kr do
+                if(st.empty()){
+                    st.push(i);
+                }
+                else{
+                    int len = i - st.top();
+                    ans = max(ans,len);
+                }
+            }
+        }
+        return ans;
+    }
